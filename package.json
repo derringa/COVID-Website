@@ -20,6 +20,7 @@
    },
    "homepage": "https://github.com/derringa/COVID-Website#readme",
    "dependencies": {
+      "axios": "^0.19.2",
       "express": "^4.17.1",
       "express-handlebars": "^4.0.4",
       "express-session": "^1.17.1"
