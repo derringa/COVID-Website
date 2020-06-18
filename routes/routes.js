@@ -8,4 +8,12 @@ module.exports = function (app) {
 	
         res.render('home', context);
     });
+    app.get('/data', function (req, res) {
+        let context = {
+            script: ['/js/data.min.js'],
+            title: 'COVID Data'
+	};
+	
+        res.render('data', context);
+    });
 }
