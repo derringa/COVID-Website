@@ -1,0 +1,34 @@
+<div id="mainContainer" class="">
+  <div id="mainContent" class="container mt-5">
+    <div class="row justify-content-around">
+      <h1>Server error</h1>
+      <span id="background404">500</span>
+    </div>
+    <div class="row justify-content-around">
+      <span>
+	Something unexpected happened...
+	<a class="sm usa-link" href="#" onClick="window.location.reload(true);">refresh</a>
+      </span>
+    </div>
+  </div>
+  <br><br>
+  <div class="container d-flex justify-content-around mt-4">
+    <ul class="inline listOfLinks">
+      <li class="inline">
+	<a class="usa-link" href="/">Home</a>
+      </li>
+      {{#if loggedIn}}
+      <li class="inline">
+	<a class="usa-link" href="/subscriptions">Subscriptions</a>
+      </li>
+      <li class="inline">
+	<a class="usa-link" href="/logout">Logout</a>
+      </li>
+      {{else}}
+      <li class="inline">
+	<a class="usa-link" href="/login">Login</a>
+      </li>
+      {{/if}}
+    </ul>
+  </div>
+</div>

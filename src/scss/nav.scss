@@ -1,0 +1,13 @@
+
+nav {
+    .gunrockPic::after {
+        content: "";
+        display: inline-block;
+        position: relative;
+        background-image: url(../img/gunrockNav.jpg);
+        background-repeat: no-repeat;
+        background-position: center;
+        width: 4rem;
+        height: 4rem;
+    }
+}
