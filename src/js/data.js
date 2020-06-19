@@ -1,5 +1,5 @@
+import '../scss/home.scss';
 import '../scss/data.scss';
-import '../scss/nav.scss';
 
 document.addEventListener('DOMContentLoaded', () => {
     const MAPAPIKEY = 'AIzaSyBpXm7Z_Rr99Ki3_iB4vHpZlPBicXqrvIk';
@@ -39,7 +39,6 @@ document.addEventListener('DOMContentLoaded', () => {
             geocodeLatLng(map, mapsMouseEvent.latLng, geocoder, (result)=>{
                 console.log(stateCode(result));
             });
-            
         });
 
         
