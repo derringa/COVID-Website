@@ -39,7 +39,6 @@ document.addEventListener('DOMContentLoaded', () => {
             geocodeLatLng(map, mapsMouseEvent.latLng, geocoder, (result)=>{
                 console.log(stateCode(result));
             });
-            
         });
 
         
