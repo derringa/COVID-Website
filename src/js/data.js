@@ -1,5 +1,4 @@
-import '../scss/data.scss';
-import '../scss/nav.scss';
+import '../scss/home.scss';
 
 document.addEventListener('DOMContentLoaded', () => {
     const MAPAPIKEY = 'AIzaSyBpXm7Z_Rr99Ki3_iB4vHpZlPBicXqrvIk';
