@@ -1,4 +1,4 @@
-main {
+/*main {
     .h1 {
 	color: blue;
     }
@@ -7,4 +7,164 @@ main {
         max-width: 100%;
         max-height: 50vh;
     }
+}*/
+
+body {
+	background-color: #010165;
+	margin: 0px;
+	background: url("../img/vincent-ghilione-unsplash.jpg") no-repeat center center fixed;
+	-webkit-background-size: cover;
+	-moz-background-size: cover;
+	-o-background-size: cover;
+    background-size: cover;
+    font-family: de-walpergens-pica;
+	width: 100%;
 }
+
+a {
+	text-decoration: none;
+}
+
+.header {
+	width: 100%;
+	min-height: 70px;
+	padding-top: 3%;
+	background: url("../img/markus-spiske-3_SvgDspSTE-unsplash.jpg") no-repeat bottom center fixed;
+	-webkit-background-size: cover;
+	-moz-background-size: cover;
+	-o-background-size: cover;
+	background-size: cover;
+    color: #ffffff;
+}
+
+nav {
+	float: center;
+	background-color: 	#011f4b;
+	width: 100%;
+	margin-top: 5%;
+    padding: 5px 0%;
+    
+    /*.gunrockPic::after {
+        content: "";
+        display: inline-block;
+        position: relative;
+        background-image: url(../img/gunrockNav.jpg);
+        background-repeat: no-repeat;
+        background-position: center;
+        width: 4rem;
+        height: 4rem;
+    } */
+}
+.navbar {
+	margin-left: 10.3%;
+	width: 75%;
+	display: flex;
+	justify-content: space-around;
+	li {
+		display: inline-block;
+		a {
+            text-decoration: none;
+			color: rgba(255, 255, 255, 0.8);
+			font-weight: normal;
+			&:hover {
+				color: #ffffff;
+			}
+		}
+	}
+}
+
+.title-box {
+    background-color: rgba(46, 45, 45, 0.6);
+    text-align: center;
+    width: 20%;
+    padding: 3%;
+    margin-left: auto;
+    margin-right: auto;
+    border-radius: 3px;
+}
+
+img {
+	display: inline-block;
+	vertical-align: middle;
+	width: 90%;
+	min-width: 100px;
+	margin: 0 auto;
+	border-style: solid;
+	border-color: 	#011f4b;
+	border-radius: 3px;
+}
+.container {
+	width: 75%;
+	margin-left: auto;
+	margin-right: auto;
+	background-color: white;
+	color: black;
+	ul {
+		width: 15%;
+		margin-left: auto;
+		margin-right: auto;
+	}
+}
+.textContainer {
+	width: 60%;
+	margin-left: auto;
+	margin-right: auto;
+	text-align: center;
+	padding: 2%;
+	a {
+		text-decoration: none;
+	}
+	p {
+		text-align: justify;
+	}
+	ol {
+		width: 90%;
+		padding: 2%;
+		margin-left: auto;
+        margin-right: auto;
+        text-align: left;
+	}
+	li {
+		padding: 3%;
+	}
+}
+form {
+	width: 90%;
+	overflow: auto;
+	background-color: rgba(255, 255, 255, 0.9);
+	padding: 2% 5%;
+	margin: 5% auto;
+	border-radius: 5px;
+	border-style: solid;
+    border-color:#6497b1;
+    //font-size: medium;
+}
+select {
+    margin-left: 12%;
+    width: 60%;
+}
+input {
+    margin-left: 12%;
+}
+input[type=submit] {
+	padding: 12px 20px;
+	border-style: solid;
+	border-color: rgb(168, 166, 166);
+	border-radius: 4px;
+	cursor: pointer;
+	margin-right: 15%;
+}
+input[type=text] {
+	width: 60%;
+}
+
+footer {
+	width: 75%;
+	bottom: 0;
+	padding: 1%;
+	position: static;
+	color: #ffffff;
+	margin-left: auto;
+	margin-right: auto;
+}
+
