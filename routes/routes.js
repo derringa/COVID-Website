@@ -5,7 +5,23 @@ module.exports = function (app) {
             script: ['/js/home.min.js'],
             title: 'COVID Home'
 	};
-	
         res.render('home', context);
+    });
+
+
+    app.get('/email-form', function (req, res) {
+        let context = {
+            script: ['/js/home.min.js'],
+            title: 'COVID Home'
+    };
+        res.render('email-form', context);
+    }); 
+
+    app.get('/data', function (req, res) {
+        let context = {
+            script: ['/js/data.min.js'],
+            title: 'COVID Data'
+	};
+        res.render('data', context);
     });
 }
