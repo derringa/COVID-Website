@@ -6,3 +6,17 @@
         min-width: 0;
     }
 }
+
+#map-box {
+    width: 100%;
+	overflow: auto;
+	background-color: #fdcb73;
+	padding: 2% 5%;
+	margin: 5% auto;
+    border-radius: 5px;
+    
+    img {
+        width: 50%;
+    }
+}
+
