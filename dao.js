@@ -1,51 +1,29 @@
+/*  filename: dao.js
+    description: Provides CovidTracking class to make requests to
+                    covidtracking.com api for data.
+*/
+
 /*
-* Program:  COVID MailingList DAO
-* Summary:  Abstraction of common database calls for asynchronous connection
-*           to javascript node.
-* Params:   File path for local SQLite database.
-* Methods:  addRecipient( user = Object( email, fname, lname, freq ))
-*               Insert new recipient into the database.
-*           addDataRequest( req = Object( datafield, email, country, state ))
-*               Insert new data requested by user associated with particular
-*               country and/or state.
-*           generateMailingList( freq = int, callback = Object(err, Object))
-*               Return a data structure of all information that needs to be
-*               e-mailed. Structure is :
-*               Object {
-*                   'specificuser@email.com': Object {
-*                                               fname:
-*                                               lname:
-*                                               regions: Object {
-*                                                           'region_url': [array of data type titles]
-*                                                           ...
-*                                                       }
-*                                           }     
-*                   ...
-*               }
+    Name:           class MailingList
+    Summary:        Contains MailingList class to abstract common database calls for
+                    asynchronous connection to javascript node. Writing statements are
+                    serialized and reading statements retreive information using a
+                    callback.
+    MainMethods:    addRecipient( user = Object( email, fname, lname, freq ))
+                        Insert new recipient into the database.
+                    addDataRequest( req = Object( datafield, email, country, state ))
+                        Insert new data requested by user associated with particular
+                        country and/or state.
+                    generateMailingList( freq = int, callback = Object(err, Object))
+                        Return a data structure of all information that needs to be
+                        e-mailed.
 */
 
 class MailingList {
     constructor(path) {
         this.dbpath = path;
     }
-    _dbconnection() {
-        // open file database
-        const sqlite3 = require('sqlite3').verbose();
-        let db = new sqlite3.Database(this.dbpath, sqlite3.OPEN_READWRITE, (err) => {
-            if (err) {
-              return console.error(err.message);
-            }
-        });
-        return db;
-    }
-    _dbclose(db) {
-        // close the database connection
-        db.close((err) => {
-            if (err) {
-              return console.error(err.message);
-            }
-        });
-    }
+    /******************* Main call methods ****************/
     addRecipient(user) {
         let db = this._dbconnection();
         let values = [user.email, user.fname, user.lname, user.freq];
@@ -63,15 +41,10 @@ class MailingList {
     }
     addDataRequest(req) {
         let db = this._dbconnection();
-        let values = [req.datafield, req.email, req.country];
+        let values = [req.datafield, req.email, req.region];
         let sql = 'INSERT INTO datarequests (recipient_id, region_id, datafield) ' +
                   'SELECT recipient.id, region.id, ? FROM recipient, region ' +
                   'WHERE recipient.email = ? ' +
-                  'AND region.country = ?';
-        if (req.state != null) {
-            sql += ' AND region.state = ?';
-            values.push(req.state);
-        }
         // insert into database
         db.serialize(() => {
             db.run(sql, values, function(err) {
@@ -84,13 +57,13 @@ class MailingList {
     }
     generateMailingList(freq, callback) {
         let db = this._dbconnection();
-        let sql1 = 'SELECT * FROM datarequests ' + 
+        let sql = 'SELECT * FROM datarequests ' + 
                    'INNER JOIN recipient ON datarequests.recipient_id = recipient.id ' +
                    'INNER JOIN region ON datarequests.region_ID = region.id ' +
                    'WHERE recipient.freq = ?';
         var sendList = new Object();
         // select from database
-        db.all(sql1, [freq], (err, row) => {
+        db.all(sql, [freq], (err, row) => {
             if (err) {
                 callback(err.message, null);
             }
@@ -101,15 +74,16 @@ class MailingList {
                     sendList[row.email].lname = row.lname;
                     sendList[row.email].regions = new Object();
                 }
-                if (!(row.url in sendList[row.email].regions)) {
-                    sendList[row.email].regions[row.url] = [];
+                if (!(row.region_code in sendList[row.email].regions)) {
+                    sendList[row.email].regions[row.region_code] = [];
                 }
-                sendList[row.email].regions[row.url].push(row.datafield);
+                sendList[row.email].regions[row.region_code].push(row.datafield);
             });
             callback(null, sendList);
         });
         this._dbclose(db);
     }
+    /***************** Main call methods end ***************/
     listRegions() {
         let db = this._dbconnection();
         // select from database
@@ -151,6 +125,24 @@ class MailingList {
             });
         });
         this._dbclose(db);
+    }
+    _dbconnection() {
+        // open file database
+        const sqlite3 = require('sqlite3').verbose();
+        let db = new sqlite3.Database(this.dbpath, sqlite3.OPEN_READWRITE, (err) => {
+            if (err) {
+              return console.error(err.message);
+            }
+        });
+        return db;
+    }
+    _dbclose(db) {
+        // close the database connection
+        db.close((err) => {
+            if (err) {
+              return console.error(err.message);
+            }
+        });
     }
 }
 
