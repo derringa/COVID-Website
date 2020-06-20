@@ -26,13 +26,14 @@ class MailingList {
     /******************* Main call methods ****************/
     addRecipient(user) {
         let db = this._dbconnection();
-        let values = [user.email, user.fname, user.lname, user.freq];
-        let sql = 'INSERT INTO recipient (email, fname, lname, freq) VALUES (?, ?, ?, ?)';
+        let values = [user.email, user.fname, user.lname];
+        let sql = 'INSERT INTO recipient (email, fname, lname, freq) VALUES (?, ?, ?, 1)';
         // insert into database
         db.serialize(() => {
             db.run(sql, values, function(err) {
                 if (err) {
-                    return console.error(err.message);
+                    //return console.error(err.message);
+                    console.log('User already present or otherwise failed to add.')
                 }
                 console.log(`Rows inserted ${this.changes}`);
             });
@@ -41,17 +42,19 @@ class MailingList {
     }
     addDataRequest(req) {
         let db = this._dbconnection();
-        let values = [req.datafield, req.email, req.region];
-        let sql = 'INSERT INTO datarequests (recipient_id, region_id, datafield) ' +
-                  'SELECT recipient.id, region.id, ? FROM recipient, region ' +
+        let regs = req.regions.map(x => x.toLowerCase());
+        console.log(regs);
+        let sql = 'INSERT INTO datarequests (recipient_id, region_id) ' +
+                  'SELECT recipient.id, region.id FROM recipient, region ' +
                   'WHERE recipient.email = ? ' +
-        // insert into database
+                  'AND region.region_code = ?'
         db.serialize(() => {
-            db.run(sql, values, function(err) {
+            regs.forEach(reg => db.run(sql, [req.email, reg], function(err) {
                 if (err) {
                     return console.error(err.message);
                 }
-            });
+                console.log(`Rows inserted ${this.changes}`);
+            }));
         });
         this._dbclose(db);
     }
@@ -95,6 +98,23 @@ class MailingList {
               }
               console.log(row);
             });
+        });
+        this._dbclose(db);
+    }
+    addRegions(reglist) {
+        let db = this._dbconnection();
+        console.log(reglist);
+        let regs = reglist.map(x => x.toLowerCase());
+        console.log(regs);
+        let sql = 'INSERT INTO region (region_code) VALUES (?)';
+        // insert into database
+        db.serialize(() => {
+            regs.forEach(reg => db.run(sql, [reg], function(err) {
+                if (err) {
+                    return console.error(err.message);
+                }
+                console.log(`Rows inserted ${this.changes}`);
+            }));
         });
         this._dbclose(db);
     }
