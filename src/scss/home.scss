@@ -109,6 +109,16 @@ nav {
 	padding: 2%;
 }
 
+#pacman {
+	display: inline-block;
+	//text-align: right;
+	margin-left: 20px;
+	width: 80%;
+	min-width: 90px;
+	margin: 0 auto;
+	padding: 2%;
+}
+
 .flex-center {
 	display: flex;
 	justify-content: center;
@@ -122,7 +132,6 @@ nav {
 .container-but-yellow {
 	width: 100%;
 	background-color: #fdbe51;
-	color: white;
 }
 
 .textContainer {
