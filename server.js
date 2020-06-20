@@ -1,5 +1,15 @@
 //require('dotenv').config();
 
+// Andy: Experimenting with reaching the database.
+const MailingList = require("./dao.js");
+const a = new MailingList("./db/covid-listserv.db");
+// a.generateMailingList(1, (err, callback) => {
+//     if (err) {
+//         console.error(err.message);
+//     }
+//     console.log(callback);
+// });
+
 var express = require('express');
 var app = express();
 
