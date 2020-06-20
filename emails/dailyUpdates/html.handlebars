@@ -1,0 +1,24 @@
+<h1>
+    COVID updates for {{today}}:
+</h1>
+{{#each  state}}
+<div class="state">
+    <h2 class="stateName">{{name}}</h2>
+    <div class="statGroup">
+        <span class="statName">Positve Tests</span>
+        <span class="statValue">{{positve}}</span>
+    </div>
+    <div class="statGroup">
+        <span class="statName">Negative Tests</span>
+        <span class="statValue">{{negative}}</span>
+    </div>
+    <div class="statGroup">
+        <span class="statName">Hospitalized</span>
+        <span class="statValue">{{hospitalizedCurrently}}</span>
+    </div>
+    <div class="statGroup">
+        <span class="statName">ICU Cases</span>
+        <span class="statValue">{{inIcuCurrently}}</span>
+    </div>
+</div>
+{{/each}}

@@ -127,7 +127,7 @@ class CovidTracking {
 
         return axios.get(fqdn)
             .then(req => {
-                console.log(req.data);
+                return req.data;
             })
     }
 }

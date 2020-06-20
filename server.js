@@ -1,15 +1,5 @@
 //require('dotenv').config();
 
-// Andy: Experimenting with reaching the database.
-const MailingList = require("./dao.js");
-const a = new MailingList("./db/covid-listserv.db");
-a.generateMailingList(1, (err, callback) => {
-    if (err) {
-        console.error(err.message);
-    }
-    console.log(callback);
-});
-
 var express = require('express');
 var app = express();
 
@@ -31,6 +21,12 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({
     extended: false
 }));
+
+
+/* Fire off email interval process */
+let EmailController = require('./serverFunctions/Email').EmailController;
+let emailController = new EmailController();
+emailController.startEmailIntervals();
 
 require('./routes/routes.js')(app);
 require('./routes/ajaxRoutes.js')(app);
