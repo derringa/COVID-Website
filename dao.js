@@ -41,15 +41,10 @@ class MailingList {
     }
     addDataRequest(req) {
         let db = this._dbconnection();
-        let values = [req.datafield, req.email, req.country];
+        let values = [req.datafield, req.email, req.region];
         let sql = 'INSERT INTO datarequests (recipient_id, region_id, datafield) ' +
                   'SELECT recipient.id, region.id, ? FROM recipient, region ' +
                   'WHERE recipient.email = ? ' +
-                  'AND region.country = ?';
-        if (req.state != null) {
-            sql += ' AND region.state = ?';
-            values.push(req.state);
-        }
         // insert into database
         db.serialize(() => {
             db.run(sql, values, function(err) {
