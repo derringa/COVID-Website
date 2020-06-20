@@ -181,8 +181,9 @@ input[type=submit] {
 	cursor: pointer;
 	margin-right: 15%;
 	&:hover {
-		background-color: #005b96;
-   		border-color: #1a355d;
+		background-color:  rgba(255, 255, 255, 0.8);
+		border-color: #03396c;
+		color: #03396c;
 	}
 }
 input[type=text] {
