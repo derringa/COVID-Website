@@ -39,7 +39,7 @@ app.use(express.static('dist'));
 app.engine('hbs', hbs.engine);
 app.set('view engine', 'hbs');
 app.set('views', (__dirname) + '/views')
-app.set('port', 8080);
+app.set('port', 6798);
 
 let imgFile;
 app.get(`/img/${imgFile}`, function (req, res) {

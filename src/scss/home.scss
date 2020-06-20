@@ -1,30 +1,15 @@
-/*main {
-    .h1 {
-	color: blue;
-    }
-
-    #gunrock {
-        max-width: 100%;
-        max-height: 50vh;
-    }
-}*/
-
 body {
-	background-color: #010165;
+	background-color: white;
 	margin: 0px;
-	background: url("../img/vincent-ghilione-unsplash.jpg") no-repeat center center fixed;
+	/*background: url("../img/jack-hamilton-unsplash.jpg") no-repeat center center fixed;
 	-webkit-background-size: cover;
 	-moz-background-size: cover;
 	-o-background-size: cover;
-    background-size: cover;
-    font-family: de-walpergens-pica;
+    background-size: cover;*/
+    font-family: "Times New Roman", Times, serif;
+   	font-size: 1rem;
+   	font-weight: 400;
 	width: 100%;
-}
-
-#map {
-    height: 50%;
-    width: 80%;
-    margin-left: 10%;
 }
 
 a {
@@ -35,7 +20,7 @@ a {
 	width: 100%;
 	min-height: 70px;
 	padding-top: 3%;
-	background: url("../img/markus-spiske-3_SvgDspSTE-unsplash.jpg") no-repeat bottom center fixed;
+	background: url("../img/nasa-unsplash.jpg") no-repeat center center fixed;
 	-webkit-background-size: cover;
 	-moz-background-size: cover;
 	-o-background-size: cover;
@@ -48,7 +33,7 @@ nav {
 	background-color: 	#011f4b;
 	width: 100%;
 	margin-top: 5%;
-    padding: 5px 0%;
+    padding: 2px 0%;
     
     /*.gunrockPic::after {
         content: "";
@@ -63,6 +48,7 @@ nav {
 }
 .navbar {
 	margin-left: 10.3%;
+	margin-top: 1%;
 	width: 75%;
 	display: flex;
 	justify-content: space-around;
@@ -82,25 +68,26 @@ nav {
 .title-box {
     background-color: rgba(46, 45, 45, 0.6);
     text-align: center;
-    width: 20%;
+    width: 40%;
     padding: 3%;
     margin-left: auto;
     margin-right: auto;
     border-radius: 3px;
 }
 
-img {
-	display: inline-block;
-	vertical-align: middle;
-	width: 90%;
-	min-width: 100px;
-	margin: 0 auto;
-	border-style: solid;
-	border-color: 	#011f4b;
-	border-radius: 3px;
-}
+ #background-thing {
+	width: 100%;
+	min-height: 600px;
+	padding-top: 3%;
+	background: url("../img/markus-spiske-unsplash.jpg") no-repeat top center fixed;
+	-webkit-background-size: cover;
+	-moz-background-size: cover;
+	-o-background-size: cover;
+	background-size: cover;
+ }
+
 .container {
-	width: 75%;
+	width: 100%;
 	margin-left: auto;
 	margin-right: auto;
 	background-color: white;
@@ -111,8 +98,44 @@ img {
 		margin-right: auto;
 	}
 }
+
+#crowd {
+	display: inline-block;
+	//text-align: right;
+	margin-left: 20px;
+	width: 100%;
+	min-width: 90px;
+	margin: 0 auto;
+	padding: 2%;
+}
+
+#pacman {
+	display: inline-block;
+	//text-align: right;
+	margin-left: 20px;
+	width: 80%;
+	min-width: 90px;
+	margin: 0 auto;
+	padding: 2%;
+}
+
+.flex-center {
+	display: flex;
+	justify-content: center;
+	div {
+		padding: 15px;
+		width: 50%;
+		margin: 5px;
+	}
+}
+
+.container-but-yellow {
+	width: 100%;
+	background-color: #fdbe51;
+}
+
 .textContainer {
-	width: 60%;
+	width: 90%;
 	margin-left: auto;
 	margin-right: auto;
 	text-align: center;
@@ -123,6 +146,14 @@ img {
 	p {
 		text-align: justify;
 	}
+}
+form {
+	width: 90%;
+	overflow: auto;
+	background-color: #fdcb73;
+	padding: 2% 5%;
+	margin: 5% auto;
+	border-radius: 5px;
 	ol {
 		width: 90%;
 		padding: 2%;
@@ -131,19 +162,16 @@ img {
         text-align: left;
 	}
 	li {
-		padding: 3%;
+		padding: 2%;
 	}
-}
-form {
-	width: 90%;
-	overflow: auto;
-	background-color: rgba(255, 255, 255, 0.9);
-	padding: 2% 5%;
-	margin: 5% auto;
-	border-radius: 5px;
-	border-style: solid;
-    border-color:#6497b1;
-    //font-size: medium;
+	img {
+		display: inline-block;
+		vertical-align: middle;
+		width: 70%;
+		min-width: 90px;
+		margin: 0 auto;
+		padding: 2%;
+	 }
 }
 select {
     margin-left: 12%;
@@ -154,23 +182,43 @@ input {
 }
 input[type=submit] {
 	padding: 12px 20px;
-	border-style: solid;
-	border-color: rgb(168, 166, 166);
+   	border-style: solid;
+	border-color: #001b43;
+	background-color: #011f4b;
+	color: rgba(255, 255, 255, 0.8);
 	border-radius: 4px;
 	cursor: pointer;
 	margin-right: 15%;
+	&:hover {
+		background-color:  rgba(255, 255, 255, 0.8);
+		border-color: #03396c;
+		color: #03396c;
+	}
 }
 input[type=text] {
 	width: 60%;
 }
 
 footer {
-	width: 75%;
+	width: 100%;
+	background: url("../img/jack-hamilton-unsplash.jpg") no-repeat center center fixed;
+	-webkit-background-size: cover;
+	-moz-background-size: cover;
+	-o-background-size: cover;
+	background-size: cover;
+    color: #ffffff;
+	//width: 75%;
 	bottom: 0;
 	padding: 1%;
 	position: static;
-	color: #ffffff;
+	/*color: #ffffff;
 	margin-left: auto;
-	margin-right: auto;
+	margin-right: auto;*/
+}
+
+.sources {
+	list-style: none;
+	color: white;
+	font-size: small;
 }
 
