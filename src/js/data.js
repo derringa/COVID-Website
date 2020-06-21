@@ -330,7 +330,10 @@ document.addEventListener('DOMContentLoaded', () => {
         positive.reverse();
         // Destroy the old canvas/chart and create a new one.
         let oldChart = document.getElementById('line-chart');
-        oldChart.parentNode.removeChild(oldChart);
+        if(oldChart){
+            oldChart.parentNode.removeChild(oldChart);
+        }
+        
 
         let newChart = document.createElement('canvas');
         newChart.width = "800";
