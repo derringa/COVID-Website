@@ -1,3 +1,5 @@
+const MailingList = require("../dao.js").MailingList;
+const db = new MailingList("./db/covid-listserv.db");
 
 module.exports = function (app) {
     app.get('/', function (req, res) {
@@ -32,4 +34,15 @@ module.exports = function (app) {
     };
         res.render('page4', context);
     }); 
+
+    app.post('/emailsubmit', function (req, res) {
+        db.addRecipient(req.body)
+        .then(user => {
+            db.addDataRequest(user);
+        })
+        .catch(err => {
+            console.log(err);
+        });
+    });
+
 }
