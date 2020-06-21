@@ -32,9 +32,12 @@ class MailingList {
             db.run(sql, values, function(err) {
                 if (err) {
                     reject(err.message);
+                    return;
                 }
+                console.log("User added");
             });
             this._dbclose(db);
+            setTimeout(500);
             resolve(user);
         });
     }
@@ -46,6 +49,7 @@ class MailingList {
             db.run(sql, [email], function(err) {
                 if (err) {
                     reject(er.message);
+                    return;
                 }
             });
             this._dbclose(db);
@@ -55,8 +59,15 @@ class MailingList {
 
     addDataRequest(req) {
         let db = this._dbconnection();
-
-        let regs = req.regions.map(x => x.toLowerCase());
+        console.log(req.email);
+        let regs;
+        if (Array.isArray(req.regions)) {
+            regs = req.regions.map(x => x.toLowerCase());
+        }
+        else {
+            regs = [req.regions];
+        }
+        console.log(regs);
         let sql = 'INSERT INTO datarequests (recipient_id, region_id) ' +
                   'SELECT recipient.id, region.id FROM recipient, region ' +
                   'WHERE recipient.email = ? ' +
@@ -65,6 +76,7 @@ class MailingList {
             regs.forEach(reg => db.run(sql, [req.email, reg], function(err) {
                 if (err) {
                     reject(err.message);
+                    return;
                 }
                 console.log(`Rows inserted ${this.changes}`);
                 resolve(0);
