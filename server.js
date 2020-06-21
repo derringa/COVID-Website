@@ -1,14 +1,7 @@
 //require('dotenv').config();
 
-// Andy: Experimenting with reaching the database.
 const MailingList = require("./dao.js");
-const a = new MailingList("./db/covid-listserv.db");
-a.generateMailingList(1, (err, callback) => {
-    if (err) {
-        console.error(err.message);
-    }
-    console.log(callback);
-});
+const db = new MailingList("./db/covid-listserv.db");
 
 var express = require('express');
 var app = express();
@@ -51,6 +44,17 @@ let jsFile;
 app.get(`/js/${jsFile}`, function (req, res) {
     res.send(`/js/${jsFile}`);
     res.end();
+});
+
+// Andy: trying to get addRecipient to run first and then addDataRequest
+app.post('/emailsubmit', function (req, res) {
+    db.addRecipient(req.body)
+    .then(user => {
+        db.addDataRequest(user);
+    })
+    .catch(err => {
+        console.log(err);
+    });
 });
 
 app.use(function (req, res) {
