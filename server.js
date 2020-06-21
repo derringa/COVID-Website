@@ -1,8 +1,5 @@
 //require('dotenv').config();
 
-const MailingList = require("./dao.js");
-const db = new MailingList("./db/covid-listserv.db");
-
 var express = require('express');
 var app = express();
 
@@ -24,6 +21,13 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({
     extended: false
 }));
+
+
+/* Fire off email interval process */
+let EmailController = require('./serverFunctions/Email').EmailController;
+let emailController = new EmailController();
+// comment out for production - will cause email cascade events to start
+//emailController.startEmailIntervals();
 
 require('./routes/routes.js')(app);
 require('./routes/ajaxRoutes.js')(app);
