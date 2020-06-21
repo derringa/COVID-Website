@@ -179,8 +179,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         let map = new google.maps.Map(document.getElementById("map"), {
             center: myLatlng,
-            zoom: 3,
-            draggable: false
+            zoom: 3
         });
 
         // Create the initial InfoWindow telling user to click the map at the location they want
