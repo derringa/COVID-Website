@@ -13,6 +13,8 @@ const SetInterval = require('setinterval-plus');
 
 class EmailController {
     constructor() {
+        this.MS_PER_DAY = 24 * 60 * 60 * 1000;
+
         this.db = new MailingList("./db/covid-listserv.db");
         this.covidTracking = new CovidTracking();
         this.email = new Email();
@@ -39,19 +41,15 @@ class EmailController {
 
     _makeApiCalls(states, context) {
         let awaitPromises = [];
-        states.forEach(state => {
+        states.forEach((state, ind) => {
             awaitPromises.push(
                 this.covidTracking.getState(state.name)
                     .then(apiCall => {
-                        states.push({
-                            hospitalizedCurrently: apiCall.hospitalizedCurrently,
-                            positive: apiCall.positive,
-                            negative: apiCall.negative,
-                            inIcuCurrently: apiCall.inIcuCurrently,
-                            state: apiCall.state,
-                        });
-
-                        return;
+                        states[ind].hospitalizedCurrently = apiCall.hospitalizedCurrently;
+                        states[ind].positive = apiCall.positive;
+                        states[ind].negative = apiCall.negative;
+                        states[ind].inIcuCurrently = apiCall.inIcuCurrently;
+                        states[ind].state = apiCall.state;
                     })
             );
         })
@@ -112,9 +110,11 @@ class EmailController {
     }
 
     startEmailIntervals() {
+        this.sendScheduledEmails();
+
         let setInterval = new SetInterval(() => {
             this.sendScheduledEmails();
-        }, 3000);
+        }, this.MS_PER_DAY);
     }
 }
 
@@ -149,7 +149,7 @@ class Email {
                             }
     */
     sendEmail(context) {
-        console.log(context);
+        context.style = ['style.css'];
         return this.createTemplate(context)
             .then(content => {
                 return this.transporter.sendMail({
