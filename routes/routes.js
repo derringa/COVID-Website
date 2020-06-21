@@ -39,9 +39,12 @@ module.exports = function (app) {
         db.addRecipient(req.body)
         .then(user => {
             db.addDataRequest(user);
+        }).then(result => {
+            res.redirect('email-form')
         })
         .catch(err => {
             console.log(err);
+            //rerender with error message?
         });
     });
 
