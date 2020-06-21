@@ -24,4 +24,12 @@ module.exports = function (app) {
 	};
         res.render('data', context);
     });
+
+    app.get('/more', function (req, res) {
+        let context = {
+            script: ['/js/home.min.js'],
+            title: 'COVID Home'
+    };
+        res.render('page4', context);
+    }); 
 }
