@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>{{title}}</title>
+    <link rel="canonical" href="https://..." />
+    <meta charset="utf-8">
+    </meta>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    </meta>
+    {{#each style}}
+    <link rel="stylesheet" type="text/css" href="/css/{{this}}">
+    </link>
+    {{/each}}
+</head>
+
+<body>
+    <h1>
+        COVID updates for {{today}}:
+    </h1>
+    {{#each  content.state}}
+    <div class="state">
+        <h2 class="stateName">{{state}}</h2>
+        <div class="statGroup">
+            <span class="statName"><strong>Positve Tests</strong></span>
+            <span class="statValue">{{positive}}</span>
+        </div>
+        <div class="statGroup">
+            <span class="statName"><strong>Negative Tests</strong></span>
+            <span class="statValue">{{negative}}</span>
+        </div>
+        <div class="statGroup">
+            <span class="statName"><strong>Hospitalized</strong></span>
+            <span class="statValue">{{hospitalizedCurrently}}</span>
+        </div>
+        <div class="statGroup">
+            <span class="statName"><strong>ICU Cases</strong></span>
+            <span class="statValue">{{inIcuCurrently}}</span>
+        </div>
+    </div>
+    {{/each}}
+</body>
+
+</html>

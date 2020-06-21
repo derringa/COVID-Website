@@ -1,6 +1,5 @@
 /*  filename: dao.js
-    description: Provides CovidTracking class to make requests to
-                    covidtracking.com api for data.
+    description: Provides MailingList class.
 */
 
 /*
@@ -26,63 +25,88 @@ class MailingList {
     /******************* Main call methods ****************/
     addRecipient(user) {
         let db = this._dbconnection();
-        let values = [user.email, user.fname, user.lname, user.freq];
-        let sql = 'INSERT INTO recipient (email, fname, lname, freq) VALUES (?, ?, ?, ?)';
+        let values = [user.email, user.fname, user.lname];
+        let sql = 'INSERT INTO recipient (email, fname, lname, freq) VALUES (?, ?, ?, 1)';
         // insert into database
-        db.serialize(() => {
+        return new Promise((resolve, reject) => {
             db.run(sql, values, function(err) {
                 if (err) {
-                    return console.error(err.message);
+                    reject(err.message);
                 }
-                console.log(`Rows inserted ${this.changes}`);
             });
+            this._dbclose(db);
+            resolve(user);
         });
-        this._dbclose(db);
     }
+
     addDataRequest(req) {
         let db = this._dbconnection();
-        let values = [req.datafield, req.email, req.region];
-        let sql = 'INSERT INTO datarequests (recipient_id, region_id, datafield) ' +
-                  'SELECT recipient.id, region.id, ? FROM recipient, region ' +
+
+        let regs = req.regions.map(x => x.toLowerCase());
+        let sql = 'INSERT INTO datarequests (recipient_id, region_id) ' +
+                  'SELECT recipient.id, region.id FROM recipient, region ' +
                   'WHERE recipient.email = ? ' +
-        // insert into database
-        db.serialize(() => {
-            db.run(sql, values, function(err) {
+                  'AND region.region_code = ?'
+        return new Promise((resolve, reject) => {
+            regs.forEach(reg => db.run(sql, [req.email, reg], function(err) {
                 if (err) {
-                    return console.error(err.message);
+                    reject(err.message);
                 }
-            });
+                console.log(`Rows inserted ${this.changes}`);
+                resolve(0);
+            }));
+            this._dbclose(db);
         });
-        this._dbclose(db);
+
     }
-    generateMailingList(freq, callback) {
+
+    generateMailingList(freq = 1) {
         let db = this._dbconnection();
-        let sql = 'SELECT * FROM datarequests ' + 
-                   'INNER JOIN recipient ON datarequests.recipient_id = recipient.id ' +
-                   'INNER JOIN region ON datarequests.region_ID = region.id ' +
-                   'WHERE recipient.freq = ?';
-        var sendList = new Object();
+        let sql = 'SELECT * FROM datarequests ' +
+            'INNER JOIN recipient ON datarequests.recipient_id = recipient.id ' +
+            'INNER JOIN region ON datarequests.region_ID = region.id ' +
+            'WHERE recipient.freq = ?';
+        var sendList = {};
         // select from database
-        db.all(sql, [freq], (err, row) => {
-            if (err) {
-                callback(err.message, null);
-            }
-            row.forEach((row) => {
-                if (!(row.email in sendList)) {
-                    sendList[row.email] = new Object();
-                    sendList[row.email].fname = row.fname;
-                    sendList[row.email].lname = row.lname;
-                    sendList[row.email].regions = new Object();
+        return new Promise((resolve, reject) => {
+            db.all(sql, [freq], (err, row) => {
+                if (err) {
+                    reject(err.message);
+                    return;
                 }
-                if (!(row.region_code in sendList[row.email].regions)) {
-                    sendList[row.email].regions[row.region_code] = [];
-                }
-                sendList[row.email].regions[row.region_code].push(row.datafield);
+                /*
+                row.forEach(row => {
+                    console.log(row);
+                    if (!(row.email in sendList)) {
+                        sendList.push({
+                            email: row.email,
+                            firstname: row.fname,
+                            lastname: row.lname,
+                            regions: {
+
+                            },
+                        });
+*/
+                row.forEach((row) => {
+                    if (!(row.email in sendList)) {
+                        sendList[row.email] = new Object();
+                        sendList[row.email].fname = row.fname;
+                        sendList[row.email].lname = row.lname;
+                        sendList[row.email].regions = new Object();
+                    }
+                    if (!(row.region_code in sendList[row.email].regions)) {
+                        sendList[row.email].regions[row.region_code] = [];
+                    }
+                    sendList[row.email].regions[row.region_code].push(row.datafield);
+
+                });
+
+                this._dbclose(db);
+                resolve(sendList);
             });
-            callback(null, sendList);
         });
-        this._dbclose(db);
     }
+
     /***************** Main call methods end ***************/
     listRegions() {
         let db = this._dbconnection();
@@ -90,60 +114,82 @@ class MailingList {
         db.serialize(() => {
             db.each(`SELECT *
                      FROM region`, (err, row) => {
-              if (err) {
-                console.error(err.message);
-              }
-              console.log(row);
+                if (err) {
+                    console.error(err.message);
+                }
+                console.log(row);
             });
         });
         this._dbclose(db);
     }
+
+    addRegions(reglist) {
+        let db = this._dbconnection();
+        console.log(reglist);
+        let regs = reglist.map(x => x.toLowerCase());
+        console.log(regs);
+        let sql = 'INSERT INTO region (region_code) VALUES (?)';
+        // insert into database
+        db.serialize(() => {
+            regs.forEach(reg => db.run(sql, [reg], function(err) {
+                if (err) {
+                    return console.error(err.message);
+                }
+                console.log(`Rows inserted ${this.changes}`);
+            }));
+        });
+        this._dbclose(db);
+    }
+
     listDataRequests() {
         let db = this._dbconnection();
         // select from database
         db.serialize(() => {
             db.each(`SELECT *
                      FROM datarequests`, (err, row) => {
-              if (err) {
-                console.error(err.message);
-              }
-              console.log(row);
+                if (err) {
+                    console.error(err.message);
+                }
+                console.log(row);
             });
         });
         this._dbclose(db);
     }
+
     listRecipients() {
         let db = this._dbconnection();
         // select from database
         db.serialize(() => {
             db.each(`SELECT *
                      FROM recipient`, (err, row) => {
-              if (err) {
-                console.error(err.message);
-              }
-              console.log(row);
+                if (err) {
+                    console.error(err.message);
+                }
+                console.log(row);
             });
         });
         this._dbclose(db);
     }
+
     _dbconnection() {
         // open file database
         const sqlite3 = require('sqlite3').verbose();
         let db = new sqlite3.Database(this.dbpath, sqlite3.OPEN_READWRITE, (err) => {
             if (err) {
-              return console.error(err.message);
+                return console.error(err.message);
             }
         });
         return db;
     }
+
     _dbclose(db) {
         // close the database connection
         db.close((err) => {
             if (err) {
-              return console.error(err.message);
+                return console.error(err.message);
             }
         });
     }
 }
 
-module.exports = MailingList;
+module.exports = { MailingList };
