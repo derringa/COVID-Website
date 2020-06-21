@@ -46,12 +46,11 @@ app.get(`/js/${jsFile}`, function (req, res) {
     res.end();
 });
 
-//Andy: trying to get addRecipient to run first and then addDataRequest
+// Andy: trying to get addRecipient to run first and then addDataRequest
 app.post('/emailsubmit', function (req, res) {
     db.addRecipient(req.body)
-    .then(regions => {
-        console.log('i should always come second!')
-        //db.addDataRequest(regions);
+    .then(user => {
+        db.addDataRequest(user);
     })
     .catch(err => {
         console.log(err);

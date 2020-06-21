@@ -29,40 +29,33 @@ class MailingList {
         let values = [user.email, user.fname, user.lname];
         let sql = 'INSERT INTO recipient (email, fname, lname, freq) VALUES (?, ?, ?, 1)';
         // insert into database
-        return new Promise((resolve) => {
-            db.serialize(() => {
-                db.run(sql, values, function(err) {
-                    if (err) {
-                        // reject(err.message);
-                        console.log('User already present or otherwise failed to add.')
-                    }
-                    console.log(`Rows inserted ${this.changes}`);
-                });
-                this._dbclose(db);
-                resolve(user.regions);
+        return new Promise((resolve, reject) => {
+            db.run(sql, values, function(err) {
+                if (err) {
+                    reject(err.message);
+                }
             });
+            this._dbclose(db);
+            resolve(user);
         });
     }
     addDataRequest(req) {
         let db = this._dbconnection();
-        let regs = req.map(x => x.toLowerCase());
-        console.log(regs);
+        let regs = req.regions.map(x => x.toLowerCase());
         let sql = 'INSERT INTO datarequests (recipient_id, region_id) ' +
                   'SELECT recipient.id, region.id FROM recipient, region ' +
                   'WHERE recipient.email = ? ' +
                   'AND region.region_code = ?'
-        return new Promise((resolve) => {
-            db.serialize(() => {
-                regs.forEach(reg => db.run(sql, [req.email, reg], function(err) {
-                    if (err) {
-                        // reject(err.message);
-                        console.log(err.message);
-                    }
-                    console.log(`Rows inserted ${this.changes}`);
-                }));
-                this._dbclose(db);
+        return new Promise((resolve, reject) => {
+            regs.forEach(reg => db.run(sql, [req.email, reg], function(err) {
+                if (err) {
+                    reject(err.message);
+                    //console.log(err.message);
+                }
+                console.log(`Rows inserted ${this.changes}`);
                 resolve(0);
-            });
+            }));
+            this._dbclose(db);
         });
     }
     generateMailingList(freq, callback) {
