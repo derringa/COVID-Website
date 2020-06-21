@@ -1,11 +1,6 @@
 body {
 	background-color: white;
 	margin: 0px;
-	/*background: url("../img/jack-hamilton-unsplash.jpg") no-repeat center center fixed;
-	-webkit-background-size: cover;
-	-moz-background-size: cover;
-	-o-background-size: cover;
-    background-size: cover;*/
     font-family: "Times New Roman", Times, serif;
    	font-size: 1rem;
    	font-weight: 400;
@@ -130,8 +125,62 @@ nav {
 }
 
 .container-but-yellow {
+	min-height: 400 px;
 	width: 100%;
 	background-color: #fdbe51;
+}
+
+#resources {
+	p {
+		text-align: center;
+	}
+
+	#resource-buttons {
+		padding-top: 20px;
+		text-align: center;
+		display: flex;
+		justify-content: space-around;
+		a {
+			display: inline-block;
+		}
+	}
+	
+	
+	.btn-primary {
+		background-color: #011f4b;
+		border-color: #001b43;
+		color: rgba(255, 255, 255, 0.8);
+		width: 200px;
+		&:hover {
+			background-color:  #b3cde0;
+			color: #03396c;
+		}
+	}
+	
+	.dropdown {
+		margin-left: auto;
+		margin-right: auto;
+		.btn-primary:not(:disabled):not(.disabled).active, .btn-primary:not(:disabled):not(.disabled):active, .show>.btn-primary.dropdown-toggle {
+			background-color:  #b3cde0;
+			color: #001b43;
+		}
+		.btn-primary{
+			&:hover {
+				background-color:  #b3cde0;
+				color: #001b43;
+			}
+		}
+		.dropdown-menu {
+			color:  #001b43;
+			height: 200px;
+			overflow-y: auto;
+			width: 75%;
+			a {
+				color:  #001b43;
+				margin-left: 2%;
+			}
+		}
+	}
 }
 
 .textContainer {
@@ -174,12 +223,10 @@ form {
 	 }
 }
 select {
-    margin-left: 12%;
-    width: 60%;
+    margin-left: 25%;
+    width: 45%;
 }
-input {
-    margin-left: 12%;
-}
+
 input[type=submit] {
 	padding: 12px 20px;
    	border-style: solid;
@@ -188,7 +235,8 @@ input[type=submit] {
 	color: rgba(255, 255, 255, 0.8);
 	border-radius: 4px;
 	cursor: pointer;
-	margin-right: 15%;
+	margin-right: auto;
+	margin-left: auto;
 	&:hover {
 		background-color:  rgba(255, 255, 255, 0.8);
 		border-color: #03396c;
@@ -196,7 +244,8 @@ input[type=submit] {
 	}
 }
 input[type=text] {
-	width: 60%;
+	width: 45%;
+	margin-left: 25%;
 }
 
 footer {
@@ -210,7 +259,7 @@ footer {
 	//width: 75%;
 	bottom: 0;
 	padding: 1%;
-	position: static;
+	//position: static;
 	/*color: #ffffff;
 	margin-left: auto;
 	margin-right: auto;*/

@@ -50,6 +50,16 @@ app.get(`/js/${jsFile}`, function (req, res) {
     res.end();
 });
 
+app.post('/emailsubmit', function (req, res) {
+    db.addRecipient(req.body)
+    .then(user => {
+        db.addDataRequest(user);
+    })
+    .catch(err => {
+        console.log(err);
+    });
+});
+
 app.use(function (req, res) {
     var context = {};
     console.log('404 route');
