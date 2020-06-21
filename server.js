@@ -26,7 +26,8 @@ app.use(bodyParser.urlencoded({
 /* Fire off email interval process */
 let EmailController = require('./serverFunctions/Email').EmailController;
 let emailController = new EmailController();
-emailController.startEmailIntervals();
+// comment out for production - will cause email cascade events to start
+//emailController.startEmailIntervals();
 
 require('./routes/routes.js')(app);
 require('./routes/ajaxRoutes.js')(app);
