@@ -38,7 +38,8 @@ module.exports = function (app) {
     app.post('/emailsubmit', function (req, res) {
         db.addRecipient(req.body)
         .then(user => {
-            db.addDataRequest(user);
+            //db.addDataRequest(user);
+            db.deleteRecipient('nnnn');
         })
         .catch(err => {
             console.log(err);

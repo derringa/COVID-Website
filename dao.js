@@ -39,6 +39,20 @@ class MailingList {
         });
     }
 
+    deleteRecipient(email) {
+        let db = this._dbconnection();
+        let sql = 'DELETE FROM recipient WHERE email = ?';
+        return new Promise((resolve, reject) => {
+            db.run(sql, [email], function(err) {
+                if (err) {
+                    reject(er.message);
+                }
+            });
+            this._dbclose(db);
+            resolve(0);
+        });
+    }
+
     addDataRequest(req) {
         let db = this._dbconnection();
 
@@ -74,19 +88,6 @@ class MailingList {
                     reject(err.message);
                     return;
                 }
-                /*
-                row.forEach(row => {
-                    console.log(row);
-                    if (!(row.email in sendList)) {
-                        sendList.push({
-                            email: row.email,
-                            firstname: row.fname,
-                            lastname: row.lname,
-                            regions: {
-
-                            },
-                        });
-*/
                 row.forEach((row) => {
                     if (!(row.email in sendList)) {
                         sendList[row.email] = new Object();
