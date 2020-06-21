@@ -37,7 +37,6 @@ class MailingList {
                 console.log("User added");
             });
             this._dbclose(db);
-            setTimeout(500);
             resolve(user);
         });
     }
