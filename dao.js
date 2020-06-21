@@ -50,7 +50,6 @@ class MailingList {
             regs.forEach(reg => db.run(sql, [req.email, reg], function(err) {
                 if (err) {
                     reject(err.message);
-                    //console.log(err.message);
                 }
                 console.log(`Rows inserted ${this.changes}`);
                 resolve(0);

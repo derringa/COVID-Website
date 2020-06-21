@@ -46,7 +46,6 @@ app.get(`/js/${jsFile}`, function (req, res) {
     res.end();
 });
 
-// Andy: trying to get addRecipient to run first and then addDataRequest
 app.post('/emailsubmit', function (req, res) {
     db.addRecipient(req.body)
     .then(user => {
