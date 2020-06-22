@@ -9,8 +9,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     </meta>
     {{#each style}}
-    <link rel="stylesheet" type="text/css" href="/css/{{this}}">
-    </link>
+    <link rel="stylesheet" type="text/css" href="{{this}}">
     {{/each}}
 </head>
 
@@ -23,22 +22,32 @@
         <h2 class="stateName">{{state}}</h2>
         <div class="statGroup">
             <span class="statName"><strong>Positve Tests</strong></span>
-            <span class="statValue">{{positive}}</span>
+            <span class="statValue">{{#if positive}}{{positive}}{{else}}not available{{/if}}</span>
         </div>
         <div class="statGroup">
             <span class="statName"><strong>Negative Tests</strong></span>
-            <span class="statValue">{{negative}}</span>
+            <span class="statValue">{{#if negative}}{{negative}}{{else}}not available{{/if}}</span>
         </div>
         <div class="statGroup">
             <span class="statName"><strong>Hospitalized</strong></span>
-            <span class="statValue">{{hospitalizedCurrently}}</span>
+            <span class="statValue">{{#if hospitalizedCurrently}}{{hospitalizedCurrently}}{{else}}not
+                available{{/if}}</span>
         </div>
         <div class="statGroup">
             <span class="statName"><strong>ICU Cases</strong></span>
-            <span class="statValue">{{inIcuCurrently}}</span>
+            <span class="statValue">{{#if inIcuCurrently}}{{inIcuCurrently}}{{else}}not available{{/if}}</span>
         </div>
     </div>
     {{/each}}
+    <footer class="footer">
+        <p>
+            {{email}} is subscribed to receive daily COVID updates.
+        </p>
+        <div>
+            <a href="{{host}}/">See more</a> |
+            <a href="{{host}}/unsubscribe?tok={{jwt}}">Unsubscribe</a>
+        </div>
+    </footer>
 </body>
 
 </html>

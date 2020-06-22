@@ -10,6 +10,7 @@ const EmailTemplate = require('email-templates');
 const MailingList = require('../dao.js').MailingList;
 const CovidTracking = require('./CovidTracking.js').CovidTracking;
 const SetInterval = require('setinterval-plus');
+const jwt = require('./jwt.js');
 
 class EmailController {
     constructor() {
@@ -149,9 +150,10 @@ class Email {
                             }
     */
     sendEmail(context) {
-        context.style = ['style.css'];
-        return this.createTemplate(context)
+        return jwt.jwtSign(context)
+            .then(tok => this.createTemplate(context, tok))
             .then(content => {
+                console.log(content);
                 return this.transporter.sendMail({
                     from: process.env.FROM_EMAIL,
                     to: context.to,
@@ -163,19 +165,18 @@ class Email {
 
     }
 
-    createTemplate(context) {
+    createTemplate(context, token) {
         const em = new EmailTemplate({
             view: {
                 options: {
                     extension: 'handlebars'
                 },
-                juice: true,
-                juiceResources: {
-                    preserveImportant: true,
-                    webResources: {
-                        relativeTo: path.join(__dirname, '..', '/emails/build'),
-                        images: true
-                    }
+            },
+            juice: true,
+            juiceResources: {
+                preserveImportant: true,
+                webResources: {
+                    relativeTo: path.join(__dirname, '..', '/emails/build'),
                 }
             }
         });
@@ -185,14 +186,23 @@ class Email {
                 locale: 'en',
                 title: 'Daily COVID Update',
                 content: context,
+                style: ['style.css'],
+                email: context.to,
+                jwt: token,
+                host: process.env.HOST,
             }),
             em.render('dailyUpdates/text.handlebars', {
                 locale: 'en',
                 title: 'Daily COVID Update',
-                content: context
+                content: context,
+                style: ['style.css'],
+                email: context.to,
+                jwt: token,
+                host: process.env.HOST,
             })
         ]);
     }
+
 
 }
 
