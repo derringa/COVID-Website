@@ -26,6 +26,7 @@
       "express": "^4.17.1",
       "express-handlebars": "^4.0.4",
       "express-session": "^1.17.1",
+      "jsonwebtoken": "^8.5.1",
       "nodemailer": "^6.4.10",
       "setinterval-plus": "^1.0.3",
       "sqlite3": "^4.2.0"
