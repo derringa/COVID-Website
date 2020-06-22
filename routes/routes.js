@@ -10,10 +10,9 @@ module.exports = function (app) {
         res.render('home', context);
     });
 
-
     app.get('/email-form', function (req, res) {
         let context = {
-            script: ['/js/home.min.js'],
+            script: ['/js/home.min.js', '/js/emailform.min.js'],
             title: 'COVID Home'
     };
         res.render('email-form', context);
@@ -37,12 +36,18 @@ module.exports = function (app) {
 
     app.post('/emailsubmit', function (req, res) {
         db.addRecipient(req.body)
-        .then(user => {
-            //db.addDataRequest(user);
-            db.deleteRecipient('nnnn');
+        .then( user => {
+            console.log('here1');
+            return db.addDataRequest(user) })
+        .then( () => {
+            console.log('here2');
+            //res.redirect('/email-form');
+            res.send( {success: true} );
         })
         .catch(err => {
-            console.log(err);
+            //res.redirect('/email-form' + '?error=1');
+            //console.log(err);
+            res.send( {error: true} );
         });
     });
 
