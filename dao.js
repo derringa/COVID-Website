@@ -52,7 +52,7 @@ class MailingList {
                 }
             });
             this._dbclose(db);
-            resolve(0);
+            resolve();
         });
     }
 
