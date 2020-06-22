@@ -22,7 +22,6 @@ app.use(bodyParser.urlencoded({
     extended: false
 }));
 
-
 /* Fire off email interval process */
 let EmailController = require('./serverFunctions/Email').EmailController;
 let emailController = new EmailController();
@@ -48,16 +47,6 @@ let jsFile;
 app.get(`/js/${jsFile}`, function (req, res) {
     res.send(`/js/${jsFile}`);
     res.end();
-});
-
-app.post('/emailsubmit', function (req, res) {
-    db.addRecipient(req.body)
-    .then(user => {
-        db.addDataRequest(user);
-    })
-    .catch(err => {
-        console.log(err);
-    });
 });
 
 app.use(function (req, res) {

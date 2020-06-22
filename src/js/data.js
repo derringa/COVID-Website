@@ -12,6 +12,8 @@ function stateCode(state){
         'arizona': 'az',
         'ar': 'ar',
         'arkansas': 'ar',
+        'ak': 'ak',
+        'alaska': 'ak',
         'ca': 'ca',
         'california': 'ca',
         'co': 'co',
@@ -60,6 +62,8 @@ function stateCode(state){
         'nevada': 'nv',
         'nh': 'nh',
         'new hampshire': 'nh',
+        'hawaii': 'hi',
+        'hi': 'hi',
         'nj': 'nj',
         'new jersey': 'nj',
         'nm': 'nm',
@@ -114,12 +118,14 @@ function stateName(state){
         'al': 'Alabama',
         'az': 'Arizona',
         'ar': 'Arkansas',
+        'ak': 'Alaska',
         'ca': 'California',
         'co': 'Colorado',
         'ct': 'Connecticut',
         'de': 'Delaware',
         'florida': 'Florida',
         'ga': 'Georgia',
+        'hi': 'Hawaii',
         'id': 'Idaho',
         'il': 'Illinois',
         'in': 'Indiana',
@@ -179,8 +185,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         let map = new google.maps.Map(document.getElementById("map"), {
             center: myLatlng,
-            zoom: 3,
-            draggable: false
+            zoom: 3
         });
 
         // Create the initial InfoWindow telling user to click the map at the location they want
@@ -209,6 +214,20 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     };
 
+    /* Handle invalid map locations */
+    function invalidLocation(){
+        document.getElementById('data-box').innerHTML = '';
+        let oldChart = document.getElementById('line-chart');
+        if(oldChart){
+            oldChart.parentNode.removeChild(oldChart);
+        }
+
+        let invalidState = document.createElement('h3');
+        invalidState.innerText = "The place you chose is not a valid state. Please select a valid US state to display data."
+        document.getElementById('data-box').appendChild(invalidState);
+
+    }
+
     /* Covert latitude and longitude to a state */
     function geocodeLatLng(map, latLong, geocoder, callback) {
         geocoder.geocode({'location': latLong}, function(result, status) {
@@ -216,14 +235,19 @@ document.addEventListener('DOMContentLoaded', () => {
             if (status === 'OK') {
                 if (result[0]) {
                     placeMarker(latLong, map);
-                    let addressInParts = result[0]['formatted_address'].split(',');
-                    let state = addressInParts[ addressInParts.length - 2].split(' ')[1];
-                    callback(state);
+                    let address = result[0]['formatted_address'];
+                    if (address.slice(address.length-3, address.length) == 'USA'){
+                        let splitAddress = address.split(',');
+                        let state = splitAddress[ splitAddress.length - 2].split(' ')[1];
+                        callback(state);
+                    }else{
+                        invalidLocation();
+                    }
                 } else {
-                    window.alert('No results found');
+                    invalidLocation();
                 }
             } else {
-                window.alert('Geocoder failed due to: ' + status);
+                invalidLocation();
             }
         });
     }
@@ -306,7 +330,10 @@ document.addEventListener('DOMContentLoaded', () => {
         positive.reverse();
         // Destroy the old canvas/chart and create a new one.
         let oldChart = document.getElementById('line-chart');
-        oldChart.parentNode.removeChild(oldChart);
+        if(oldChart){
+            oldChart.parentNode.removeChild(oldChart);
+        }
+        
 
         let newChart = document.createElement('canvas');
         newChart.width = "800";

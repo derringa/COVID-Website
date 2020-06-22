@@ -29,35 +29,60 @@ class MailingList {
         let sql = 'INSERT INTO recipient (email, fname, lname, freq) VALUES (?, ?, ?, 1)';
         // insert into database
         return new Promise((resolve, reject) => {
-            db.run(sql, values, function(err) {
+            db.run(sql, values, err => {
+                this._dbclose(db);
                 if (err) {
                     reject(err.message);
+                    return;
+                }
+                console.log("User added");
+                resolve(user);
+            });
+        });
+    }
+
+    deleteRecipient(email) {
+        let db = this._dbconnection();
+        let sql = 'DELETE FROM recipient WHERE email = ?';
+        return new Promise((resolve, reject) => {
+            db.run(sql, [email], function(err) {
+                if (err) {
+                    reject(er.message);
+                    return;
                 }
             });
             this._dbclose(db);
-            resolve(user);
+            resolve(0);
         });
     }
 
     addDataRequest(req) {
         let db = this._dbconnection();
-
-        let regs = req.regions.map(x => x.toLowerCase());
+        let regs;
+        if (Array.isArray(req.regionsList)) {
+            regs = req.regionsList.map(x => x.toLowerCase());
+        }
+        else {
+            regs = [req.regionsList.toLowerCase()];
+        }
         let sql = 'INSERT INTO datarequests (recipient_id, region_id) ' +
                   'SELECT recipient.id, region.id FROM recipient, region ' +
                   'WHERE recipient.email = ? ' +
                   'AND region.region_code = ?'
-        return new Promise((resolve, reject) => {
-            regs.forEach(reg => db.run(sql, [req.email, reg], function(err) {
-                if (err) {
-                    reject(err.message);
-                }
-                console.log(`Rows inserted ${this.changes}`);
-                resolve(0);
-            }));
-            this._dbclose(db);
+        let awaitPromise = regs.map(reg => {
+            return new Promise((resolve, reject) => {
+                db.run(sql, [req.email, reg], function(err) {
+                    if (err) {
+                        //console.log(err.message);
+                        reject(err.message);
+                        return;
+                    }
+                    //console.log(`Rows inserted ${this.changes}`);
+                    resolve();
+                });
+            });
         });
-
+        return Promise.all(awaitPromise).then( () => this._dbclose(db) );
     }
 
     generateMailingList(freq = 1) {
@@ -74,19 +99,6 @@ class MailingList {
                     reject(err.message);
                     return;
                 }
-                /*
-                row.forEach(row => {
-                    console.log(row);
-                    if (!(row.email in sendList)) {
-                        sendList.push({
-                            email: row.email,
-                            firstname: row.fname,
-                            lastname: row.lname,
-                            regions: {
-
-                            },
-                        });
-*/
                 row.forEach((row) => {
                     if (!(row.email in sendList)) {
                         sendList[row.email] = new Object();

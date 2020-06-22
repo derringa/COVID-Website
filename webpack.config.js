@@ -15,6 +15,7 @@ module.exports = [
         },
         entry: {
             home: ['./src/js/home.js'],
+            emailform: ['./src/js/emailform.js'],
             data: ['./src/js/data.js']
         },
         devtool: 'inline-source-map',
