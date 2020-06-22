@@ -1,9 +1,5 @@
 let CovidTracking = require('../serverFunctions/CovidTracking.js').CovidTracking;
 covidTracking = new CovidTracking();
-let db = require('../dao.js');
-
-// const MailingList = require("../dao.js").MailingList;
-// const db = new MailingList("./db/covid-listserv.db");
 
 module.exports = function (app) {
 
@@ -26,11 +22,6 @@ module.exports = function (app) {
             .then(context => {
                 res.send(context);
             })
-    });
-
-    app.get('/unsubscribe', (req, res) => {
-        console.log(req.query.tok);
-
     });
 
     // app.post('/emailsubmit', function (req, res) {

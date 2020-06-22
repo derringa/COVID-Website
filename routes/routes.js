@@ -1,5 +1,6 @@
 const MailingList = require("../dao.js").MailingList;
 const db = new MailingList("./db/covid-listserv.db");
+const jwt = require('../serverFunctions/jwt.js');
 
 module.exports = function (app) {
     app.get('/', function (req, res) {
@@ -51,4 +52,22 @@ module.exports = function (app) {
         });
     });
 
+    app.get('/unsubscribe', (req, res) => {
+        let dec;
+
+        jwt.jwtDecode(req.query.tok)
+        .then(decoded => {
+            dec = decoded;
+            return db.deleteRecipient(decoded.to);
+        })
+        .then(() => {
+            res.send(`${dec.to} has been unsubscribed.`)
+        })
+        .catch(err => {
+            console.log(err);
+            res.send(err);
+        })
+
+
+    });
 }
